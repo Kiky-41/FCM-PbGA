@@ -70,3 +70,11 @@ MATLAB, Python. Python notebooks: `numpy`, `pandas`, `scipy`, `matplotlib` (as i
 ```bibtex
 @article{Ikhsan_2026, title={Structural feasibility handling in non-convex economic dispatch: Integrating fuzzy C-means clustering with a diagnostically-redesigned genetic algorithm}, volume={0}, ISSN={2146-5703}, url={http://dx.doi.org/10.36922/IJOCTA026400306}, DOI={10.36922/ijocta026400306}, number={0}, journal={An International Journal of Optimization and Control: Theories & Applications (IJOCTA)}, publisher={AccScience Publishing}, author={Ikhsan, Rifki Rahman Nur and Suhartono, Efri and Raharjo, Jangkung and Yustika, Lindiasari Martha and Wijaya, I Gede Putu Oka Indra}, year={2026}, month=Nov, pages={026400306} }
 ```
+
+## License
+
+[![CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
+
+Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **Attribution is required**: any use of this code, results, or figures, including in publications, must cite:
+
+> Rifki Rahman Nur Ikhsan; Efri Suhartono; Jangkung Raharjo; Lindiasari Martha Yustika; I Gede Putu Oka Indra Wijaya (2026). Structural feasibility handling in non-convex economic dispatch: Integrating fuzzy C-means clustering with a diagnostically-redesigned genetic algorithm. *An International Journal of Optimization and Control: Theories & Applications (IJOCTA)*. https://doi.org/10.36922/IJOCTA026400306

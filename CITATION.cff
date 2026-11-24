@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this code or results, you must cite the paper below (CC BY 4.0 attribution requirement)."
+title: "FCM-PbGA: Structural feasibility handling in non-convex economic dispatch: Integrating fuzzy C-means clustering with a diagnostically-redesigned genetic algorithm"
+type: software
+license: CC-BY-4.0
+repository-code: "https://github.com/Kiky-41/FCM-PbGA"
+authors:
+  - family-names: "Ikhsan"
+    given-names: "Rifki Rahman Nur"
+  - family-names: "Suhartono"
+    given-names: "Efri"
+  - family-names: "Raharjo"
+    given-names: "Jangkung"
+  - family-names: "Yustika"
+    given-names: "Lindiasari Martha"
+  - family-names: "Wijaya"
+    given-names: "I Gede Putu Oka Indra"
+preferred-citation:
+  type: article
+  title: "Structural feasibility handling in non-convex economic dispatch: Integrating fuzzy C-means clustering with a diagnostically-redesigned genetic algorithm"
+  authors:
+    - family-names: "Ikhsan"
+      given-names: "Rifki Rahman Nur"
+    - family-names: "Suhartono"
+      given-names: "Efri"
+    - family-names: "Raharjo"
+      given-names: "Jangkung"
+    - family-names: "Yustika"
+      given-names: "Lindiasari Martha"
+    - family-names: "Wijaya"
+      given-names: "I Gede Putu Oka Indra"
+  journal: "An International Journal of Optimization and Control: Theories & Applications (IJOCTA)"
+  year: 2026
+  doi: 10.36922/IJOCTA026400306
