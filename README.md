@@ -15,70 +15,119 @@ Practical thermal economic dispatch (ED) problems with valve-point effects (VPE)
 
 ## Proposed method
 
-FCM-PbGA combines a feasibility-preserving chromosome with an island-based genetic algorithm. Fuzzy C-Means clusters historical dispatch vectors and seeds the population near the cluster centre closest to the previous hour; ramp- and POZ-aware projection keeps every candidate feasible; BLX-$\alpha$ crossover and adaptive Gaussian mutation explore; ring migration shares elites; and a greedy Lamarckian search refines the final dispatch.
+FCM-PbGA combines a feasibility-preserving chromosome with an island-based genetic algorithm. Fuzzy C-Means clusters historical dispatch vectors and seeds the population near the cluster centre closest to the previous hour; ramp- and POZ-aware projection keeps every candidate feasible; BLX-$\alpha$ crossover and adaptive Gaussian mutation explore; ring migration shares elites; and a greedy Lamarckian search refines the final dispatch. The method is evaluated on the IEEE 15-unit, 24-hour benchmark with valve-point effects, prohibited operating zones, ramp limits and unit commitment.
 
-### Objective (valve-point, unit commitment)
+### Objective and constraints
 
-$$\min F(\mathbf{P},\mathbf{u})=\sum_{i=1}^{N}u_i\left(a_i+b_iP_i+c_iP_i^2+\left|d_i\sin\!\left(e_i\left(P_i^{\min}-P_i\right)\right)\right|\right)$$
+Only committed units contribute cost, and the valve-point term adds a sinusoidal ripple to the quadratic curve:
 
-subject to
+$$\min F(\mathbf{P},\mathbf{u})=\sum_{i=1}^{N}u_i\left(a_i+b_iP_i+c_iP_i^2+\left|d_i\sin\!\left(e_i\left(P_i^{\min}-P_i\right)\right)\right|\right).$$
 
-$$\sum_iP_i=P_D+P_L,\qquad u_iP_i^{\min}\le P_i\le u_iP_i^{\max},\qquad \sum_iu_iP_i^{\max}\ge P_D$$
+The schedule must satisfy
 
-$$P_i\notin\bigcup_{k=1}^{K_i}\left[P_{i,k}^{L},P_{i,k}^{U}\right],\qquad -R_i^{D}\le P_i^{t}-P_i^{t-1}\le R_i^{U}$$
+$$\sum_iP_i=P_D+P_L,\qquad u_iP_i^{\min}\le P_i\le u_iP_i^{\max},\qquad \sum_iu_iP_i^{\max}\ge P_D,$$
+
+$$P_i\notin\bigcup_{k=1}^{K_i}\left[P_{i,k}^{L},P_{i,k}^{U}\right],\qquad -R_i^{D}\le P_i^{t}-P_i^{t-1}\le R_i^{U}.$$
+
+The first line balances power, forces offline units to zero, and requires enough committed capacity. The second line removes prohibited zones and limits the change between hours.
+
+### Notation
+
+| Symbol | Meaning | Unit |
+|---|---|---|
+| $N$ | number of units | – |
+| $P_i^{t}$ | output of unit $i$ at period $t$ | MW |
+| $u_i^{t}$ | commitment state, 1 online / 0 offline | – |
+| $a_i,b_i,c_i$ | fuel-cost coefficients | – |
+| $d_i,e_i$ | valve-point amplitude and frequency | – |
+| $P_i^{\min},P_i^{\max}$ | generation limits | MW |
+| $P_D^{t}$ | demand at period $t$ | MW |
+| $R_i^{U},R_i^{D}$ | ramp-up and ramp-down limits | MW/h |
+| $[P_{i,k}^{L},P_{i,k}^{U}]$ | $k$-th prohibited operating zone | MW |
+| $L_i^{t},U_i^{t}$ | ramp-effective lower and upper bounds | MW |
+| $\Omega_i^{t}$ | admissible set after ramp and POZ removal | MW |
+| $u_{kj}$ | FCM membership of sample $j$ in cluster $k$ | – |
+| $\mathbf{c}_k$ | FCM cluster centre | MW |
+| $m$ | FCM fuzzification parameter | – |
+| $\alpha$ | BLX expansion parameter | – |
+| $\sigma_j$ | mutation standard deviation of gene $j$ | MW |
+| $\gamma,\rho$ | initial mutation scale and decay rate | – |
+| $\mathcal{P}_s$ | population of island $s$ | – |
 
 ### Ramp- and POZ-feasible region
 
+Ramp limits make the bounds time-varying. An off-to-on transition starts from zero rather than from the minimum:
+
 $$L_i^{t}=
 \begin{cases}
-0, & u_i^{t-1}=0,\ u_i^{t}=1\\
-\max\!\left(P_i^{\min},P_i^{t-1}-R_i^{D}\right), & \text{otherwise}
+0, & u_i^{t-1}=0,\ u_i^{t}=1,\\
+\max\!\left(P_i^{\min},P_i^{t-1}-R_i^{D}\right), & \text{otherwise},
 \end{cases}
 \qquad
 U_i^{t}=
 \begin{cases}
-\min\!\left(P_i^{\max},R_i^{U}\right), & u_i^{t-1}=0,\ u_i^{t}=1\\
-\min\!\left(P_i^{\max},P_i^{t-1}+R_i^{U}\right), & \text{otherwise}
+\min\!\left(P_i^{\max},R_i^{U}\right), & u_i^{t-1}=0,\ u_i^{t}=1,\\
+\min\!\left(P_i^{\max},P_i^{t-1}+R_i^{U}\right), & \text{otherwise}.
 \end{cases}$$
 
-$$\Omega_i^{t}=\left[L_i^{t},U_i^{t}\right]\setminus\bigcup_{k=1}^{K_i}Z_{i,k},\qquad P_i\leftarrow\Pi_{\Omega_i^{t}}(P_i)=\arg\min_{y\in\Omega_i^{t}}|y-P_i|$$
+Removing the prohibited zones leaves a union of disjoint intervals:
+
+$$\Omega_i^{t}=\left[L_i^{t},U_i^{t}\right]\setminus\bigcup_{k=1}^{K_i}Z_{i,k}.$$
+
+Every candidate is projected onto this set:
+
+$$P_i\leftarrow\Pi_{\Omega_i^{t}}(P_i)=\arg\min_{y\in\Omega_i^{t}}|y-P_i|.$$
+
+The projection moves an infeasible value to the nearest admissible point, so crossover and mutation cannot inject ramp or POZ violations into the population.
 
 ### FCM seeding
 
-$$J_{\mathrm{FCM}}=\sum_{j=1}^{M}\sum_{k=1}^{C}u_{kj}^{m}\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2^2,\qquad \sum_{k=1}^{C}u_{kj}=1$$
+Fuzzy C-Means minimises the weighted distance to the cluster centres:
+
+$$J_{\mathrm{FCM}}=\sum_{j=1}^{M}\sum_{k=1}^{C}u_{kj}^{m}\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2^2,\qquad \sum_{k=1}^{C}u_{kj}=1.$$
+
+The centres and memberships are updated alternately:
 
 $$\mathbf{c}_k=\frac{\sum_{j=1}^{M}u_{kj}^{m}\mathbf{x}_j}{\sum_{j=1}^{M}u_{kj}^{m}},\qquad
-u_{kj}=\left(\sum_{l=1}^{C}\left(\frac{\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2}{\left\|\mathbf{x}_j-\mathbf{c}_l\right\|_2}\right)^{\frac{2}{m-1}}\right)^{-1}$$
+u_{kj}=\left(\sum_{l=1}^{C}\left(\frac{\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2}{\left\|\mathbf{x}_j-\mathbf{c}_l\right\|_2}\right)^{\frac{2}{m-1}}\right)^{-1}.$$
 
-$$k^*=\arg\min_k\left\|\mathbf{c}_k-\mathbf{P}^{t-1}\right\|_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^*}$$
+The membership equation gives a sample a high degree in a nearby cluster and a low degree in a distant one. The seed for period $t$ is the centre nearest to the previous dispatch:
+
+$$k^{*}=\arg\min_k\left\|\mathbf{c}_k-\mathbf{P}^{t-1}\right\|_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^{*}}.$$
 
 ### Genetic operators
 
-Tournament selection over a pool $\mathcal{T}$ of size $\kappa$:
+Parents are chosen by tournament:
 
-$$\boldsymbol{\theta}^{\text{sel}}=\arg\min_{\boldsymbol{\theta}\in\mathcal{T}}F(\boldsymbol{\theta})$$
+$$\boldsymbol{\theta}^{\text{sel}}=\arg\min_{\boldsymbol{\theta}\in\mathcal{T}}F(\boldsymbol{\theta}),\qquad |\mathcal{T}|=\kappa.$$
 
-BLX-$\alpha$ crossover:
+An offspring gene is either copied from the first parent or sampled in the expanded parental interval:
 
-$$\theta_j'\sim\mathcal{U}\!\left(\min(\theta_j^{(1)},\theta_j^{(2)})-\alpha\Delta_j,\ \max(\theta_j^{(1)},\theta_j^{(2)})+\alpha\Delta_j\right),\qquad \Delta_j=\left|\theta_j^{(1)}-\theta_j^{(2)}\right|$$
+$$\theta_j'\sim\mathcal{U}\!\left(\min(\theta_j^{(1)},\theta_j^{(2)})-\alpha\Delta_j,\ \max(\theta_j^{(1)},\theta_j^{(2)})+\alpha\Delta_j\right),\qquad \Delta_j=\left|\theta_j^{(1)}-\theta_j^{(2)}\right|.$$
 
-Gaussian mutation with adaptive scale:
+Mutation adds a Gaussian perturbation whose scale starts as a fraction of the unit range and decays over generations:
 
-$$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\qquad \sigma_j^{(0)}=\gamma\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right),\qquad \sigma_j^{(g+1)}=\max\!\left(\rho\sigma_j^{(g)},\sigma_j^{\min}\right)$$
+$$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\qquad \sigma_j^{(0)}=\gamma\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right),\qquad \sigma_j^{(g+1)}=\max\!\left(\rho\sigma_j^{(g)},\sigma_j^{\min}\right).$$
 
-Ring migration every $G_{\text{mig}}$ generations:
+The decay turns broad exploration into fine exploitation. Ring migration moves the best members of island $s$ into the neighbouring island:
 
-$$\mathcal{M}_s^{g}=\operatorname{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\right),\qquad \mathcal{P}_{s+1}^{g}\leftarrow\left(\mathcal{P}_{s+1}^{g}\setminus\operatorname{Worst}_{K_{\text{mig}}}\right)\cup\mathcal{M}_s^{g}$$
+$$\mathcal{M}_s^{g}=\operatorname{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\right),\qquad \mathcal{P}_{s+1}^{g}\leftarrow\left(\mathcal{P}_{s+1}^{g}\setminus\operatorname{Worst}_{K_{\text{mig}}}\left(\mathcal{P}_{s+1}^{g}\right)\right)\cup\mathcal{M}_s^{g}.$$
 
 ### Lamarckian refinement and fitness
 
-One random gene is perturbed per iteration with $\sigma_{\text{ls}}=0.03\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right)$ and accepted only if it lowers the cost:
+The local search perturbs one randomly chosen gene with $\sigma_{\text{ls}}=0.03\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right)$ and accepts it only if the cost falls:
 
-$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'\ \text{if}\ F(\boldsymbol{\theta}')<F(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{else}\ \boldsymbol{\theta}^{(\ell-1)}$$
+$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'\ \text{if}\ F(\boldsymbol{\theta}')<F(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{otherwise}\ \boldsymbol{\theta}^{(\ell-1)}.$$
 
-Residual infeasibility is penalised:
+Residual infeasibility is penalised. The shortfall is
 
-$$\delta^{t}=\max\!\left(0,P_D^{t}-\sum_iP_i^{t}\right),\qquad J=F+\lambda(\delta^{t})^2+\sum_{i\in\mathcal{V}^{t}}\left(\beta_0+\beta_1\min\left\{\left|P_i-P_{i,k}^{L}\right|,\left|P_i-P_{i,k}^{U}\right|\right\}\right)$$
+$$\delta^{t}=\max\!\left(0,P_D^{t}-\sum_iP_i^{t}\right),$$
+
+and the final fitness is
+
+$$J=F+\lambda(\delta^{t})^2+\sum_{i\in\mathcal{V}^{t}}\left(\beta_0+\beta_1\min\left\{\left|P_i-P_{i,k}^{L}\right|,\left|P_i-P_{i,k}^{U}\right|\right\}\right),$$
+
+where $\mathcal{V}^{t}$ is the set of units still inside a prohibited zone. The quadratic term punishes unserved demand, and the linear term punishes residual POZ violations.
 
 ### Reported result
 
