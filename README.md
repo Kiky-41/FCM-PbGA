@@ -15,7 +15,7 @@ Practical thermal economic dispatch (ED) problems with valve-point effects (VPE)
 
 ## Proposed method
 
-FCM-PbGA combines a feasibility-preserving chromosome with an island-based genetic algorithm. Fuzzy C-Means clusters historical dispatch vectors and seeds the population near the cluster centre closest to the previous hour; ramp- and POZ-aware projection keeps every candidate feasible; BLX-$\alpha$ crossover and adaptive Gaussian mutation explore; ring migration shares elites; and a greedy Lamarckian search refines the final dispatch. The method is evaluated on the IEEE 15-unit, 24-hour benchmark with valve-point effects, prohibited operating zones, ramp limits and unit commitment.
+FCM-PbGA is a feasibility-aware framework: commitment-consistent encoding, FCM-guided initialisation, ramp-feasible bounds, POZ-aware projection and greedy Lamarckian refinement carried by a genetic search. The paper presents it in stages. Stage-1 FCM-PbGA partitions the population into six islands; three redesigns follow, and the final variant, FCM-PbGA-v4, runs a single population. Every variant shares the chromosome, projection and refinement below. The method is evaluated on the IEEE 15-unit, 24-hour benchmark with valve-point effects, prohibited operating zones, ramp limits and unit commitment.
 
 ### Objective and constraints
 
@@ -100,9 +100,15 @@ Mutation adds a Gaussian perturbation whose scale starts as a fraction of the un
 
 $$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\qquad \sigma_j^{(0)}=\gamma\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right),\qquad \sigma_j^{(g+1)}=\max\left(\rho\sigma_j^{(g)},\sigma_j^{\min}\right).$$
 
-The decay turns broad exploration into fine exploitation. Ring migration moves the best members of island $s$ into the neighbouring island:
+The decay turns broad exploration into fine exploitation. Ring migration, used in Stage-1 FCM-PbGA, moves the best members of island $s$ into the neighbouring island:
 
 $$\mathcal{M}_s^{g}=\mathrm{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\right),\qquad \mathcal{P}_{s+1}^{g}\leftarrow\left(\mathcal{P}_{s+1}^{g}\setminus\mathrm{Worst}_{K_{\text{mig}}}\left(\mathcal{P}_{s+1}^{g}\right)\right)\cup\mathcal{M}_s^{g}.$$
+
+### Stage-1 architecture and the v4 redesign
+
+Stage-1 FCM-PbGA splits the population into six islands and merges them 6→3→1 at generations 100 and 200. It keeps four elite individuals per island, starts mutation at $\gamma=0.12$ with decay $\rho=0.97$, uses a per-gene mutation probability of 0.15 and seeds one individual near the FCM centroid.
+
+Three redesigns follow, each changing only the parameters that differ from the previous stage. FCM-PbGA-v2 adds adaptive merging, stagnation-triggered reheating, POZ-aware crossover and mutation, and fractional seeding of every island ($\beta_{\text{frac}}=0.15$, spread $\beta=0.05$). FCM-PbGA-v3 adopts the budget-matched GA operators: one elite per island, $\gamma=0.20$, no decay ($\rho=1.0$), per-gene mutation 0.20, reheating disabled. FCM-PbGA-v4, the final variant, removes the island phase entirely: the schedule is $S(g)=1$ for every generation, so merge and migration never trigger, while FCM seeding, POZ-aware crossover and the 20-step local search are retained. All variants spend about 53,000 evaluations per hour at 200 individuals and 300 generations.
 
 ### Lamarckian refinement and fitness
 
@@ -122,7 +128,7 @@ where $\mathcal{V}^{t}$ is the set of units still inside a prohibited zone. The 
 
 ### Reported result
 
-IEEE 15-unit, 24-hour benchmark, 30 trials: best cost USD 655,073.62 with standard deviation USD 1,469, using only the units needed at each hour.
+FCM-PbGA-v4 on the IEEE 15-unit, 24-hour benchmark, 30 trials: mean USD 655,073.62 with standard deviation USD 1,469, a statistical tie with the budget-matched GA (p = 0.199, d = -0.34). Stage-1 FCM-PbGA returns USD 662,173.34 with standard deviation USD 2,150.85 on the same benchmark.
 
 ## Contents
 
@@ -180,7 +186,7 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 | Method | Mean cost (USD) | Std | Min | Max |
 |---|---|---|---|---|
-| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| Stage-1 | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
 | FCM-PbGA-v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
 | GA-vanilla | 663,692.91 | 1,733.43 | 659,747.58 | 666,989.51 |
 | PSO-vanilla | 676,324.83 | 2,562.30 | 673,125.42 | 683,582.42 |
@@ -188,31 +194,31 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 | WOA-vanilla | 674,320.01 | 2,239.87 | 669,046.26 | 680,054.54 |
 | MeritOrder-vanilla | 688,819.61 | 0.00 | 688,819.61 | 688,819.61 |
 
-FCM-PbGA_v4 is the cheapest entry at 655,073.62 USD, 1.30% under vanilla GA, 1.65% under GWO and 4.90% under the merit-order schedule. PSO and WOA sit 3.14% and 2.85% above the tuned run, so both trail the GA family.
+Stage-1 FCM-PbGA is the six-island architecture of the paper; FCM-PbGA-v4 is the final single-population variant. v4 is the cheapest entry at 655,073.62 USD, 1.30% under vanilla GA, 1.65% under GWO and 4.90% under the merit-order schedule; Stage-1 sits at 662,173.34 USD. PSO and WOA stay 3.14% and 2.85% above v4, so both trail the GA family.
 
 ### Size-matched baselines, 30 runs
 
 | Method | Mean cost (USD) | Std | Min | Max |
 |---|---|---|---|---|
-| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| Stage-1 | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
 | FCM-PbGA-v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
 | GA-matched | 655,518.39 | 1,165.25 | 653,461.35 | 657,699.70 |
 | PSO-matched | 672,791.16 | 1,798.52 | 667,779.74 | 675,980.40 |
 | GWO-matched | 660,576.00 | 1,544.03 | 657,060.42 | 663,418.45 |
 | WOA-matched | 668,373.34 | 1,874.98 | 664,103.91 | 673,550.55 |
 
-Against the size-matched reruns the margin shrinks: FCM-PbGA_v4 is 0.07% under GA_matched, 0.83% under GWO_matched, 2.63% under PSO_matched and 1.99% under WOA_matched. The equal-budget GA is effectively tied, which is the comparison the paper treats as its hardest case.
+Against the budget-matched reruns the margin shrinks: FCM-PbGA-v4 is 0.07% under GA_matched, 0.83% under GWO_matched, 2.63% under PSO_matched and 1.99% under WOA_matched. The equal-budget GA is effectively tied, which is the comparison the paper treats as its hardest case.
 
 ### Ablation over 30 runs
 
-| Variant | Full | NoFCM | NoLS | NoIslands | NoMigration |
+| Variant | Stage-1 | NoFCM | NoLS | NoIslands | NoMigration |
 |---|---|---|---|---|---|
 | Mean cost (USD) | 662,173.34 | 662,489.74 | 661,842.65 | 656,904.09 | 663,542.93 |
 | Std | 2,150.85 | 1,356.36 | 1,627.67 | 1,432.79 | 1,633.09 |
 | Min | 657,914.50 | 660,432.14 | 658,385.11 | 654,180.22 | 660,793.81 |
 | Max | 667,154.23 | 665,373.39 | 665,665.84 | 659,503.24 | 666,676.58 |
 
-Dropping islands gives 656,904.09 USD, 0.80% under the full method, so islands do not pay for themselves on this case. Dropping line search lowers the mean by 0.05%, dropping FCM raises it by 0.05%, and dropping migration raises it by 0.21%. All gaps sit inside or near one standard deviation of the full run.
+Dropping islands gives 656,904.09 USD, 0.80% under Stage-1, so islands do not pay for themselves on this case. Dropping line search lowers the mean by 0.05%, dropping FCM raises it by 0.05%, and dropping migration raises it by 0.21%. All gaps sit inside or near one standard deviation of the Stage-1 run.
 
 ### Omnibus tests, 30 runs
 
@@ -237,7 +243,7 @@ Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p fr
 
 ### Comparisons, vanilla baselines
 
-| Metric | Full | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla |
+| Metric | Stage-1 | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla |
 |---|---|---|---|---|---|
 | Mean difference (USD) | -7,099.72 | -8,619.29 | -21,251.21 | -10,971.94 | -19,246.39 |
 | t-test p | 1.58e-21 | 1.50e-28 | 1.44e-43 | 2.80e-30 | 1.56e-43 |
