@@ -1,0 +1,5 @@
+constraint,N_pre,Max_pre_MW,N_post,Max_post_MW
+power_balance,0,0.0,0,0.0
+ramp,25,172.8004,1,120.0
+POZ,24,9.9433,29,12.4462
+gen_limits_offline,0,0.0,3,70.0
