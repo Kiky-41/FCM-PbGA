@@ -201,6 +201,8 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 | GWO_matched | 660,576.00 | 1,544.03 | 657,060.42 | 663,418.45 |
 | WOA_matched | 668,373.34 | 1,874.98 | 664,103.91 | 673,550.55 |
 
+The tuned FCM-PbGA run is the cheapest of the eleven entries at 655,073.62 USD, 1.30% below vanilla GA and 0.07% below the size-matched GA. Every GA-family variant beats the merit-order schedule at 688,819.61 USD, while PSO and WOA trail both GA variants.
+
 ### Ablation over 30 runs
 
 | Variant | Mean cost (USD) | Std | Min | Max |
@@ -210,6 +212,8 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 | NoLS | 661,842.65 | 1,627.67 | 658,385.11 | 665,665.84 |
 | NoIslands | 656,904.09 | 1,432.79 | 654,180.22 | 659,503.24 |
 | NoMigration | 663,542.93 | 1,633.09 | 660,793.81 | 666,676.58 |
+
+Dropping islands gives 656,904.09 USD, 0.80% under the full method, so islands do not pay for themselves on this case. Dropping line search lowers the mean by 0.05%, dropping FCM raises it by 0.05%, and dropping migration raises it by 0.21%. All gaps sit inside or near one standard deviation of the full run.
 
 ### Result workbooks
 
@@ -231,6 +235,8 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 | [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx) | raw output |
 | [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx) | raw output |
 | [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx) | raw output |
+
+The workbooks hold the raw solver output behind the tables above: per-unit schedules, per-hour costs, constraint checks and run statistics.
 
 
 ## Requirements
