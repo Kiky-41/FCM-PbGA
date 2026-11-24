@@ -33,26 +33,17 @@ The first line balances power, forces offline units to zero, and requires enough
 
 ### Notation
 
-| Symbol | Meaning | Unit |
-|---|---|---|
-| $N$ | number of units | – |
-| $P_i^{t}$ | output of unit $i$ at period $t$ | MW |
-| $u_i^{t}$ | commitment state, 1 online / 0 offline | – |
-| $a_i,b_i,c_i$ | fuel-cost coefficients | – |
-| $d_i,e_i$ | valve-point amplitude and frequency | – |
-| $P_i^{\min},P_i^{\max}$ | generation limits | MW |
-| $P_D^{t}$ | demand at period $t$ | MW |
-| $R_i^{U},R_i^{D}$ | ramp-up and ramp-down limits | MW/h |
-| $[P_{i,k}^{L},P_{i,k}^{U}]$ | $k$-th prohibited operating zone | MW |
-| $L_i^{t},U_i^{t}$ | ramp-effective lower and upper bounds | MW |
-| $\Omega_i^{t}$ | admissible set after ramp and POZ removal | MW |
-| $u_{kj}$ | FCM membership of sample $j$ in cluster $k$ | – |
-| $\mathbf{c}_k$ | FCM cluster centre | MW |
-| $m$ | FCM fuzzification parameter | – |
-| $\alpha$ | BLX expansion parameter | – |
-| $\sigma_j$ | mutation standard deviation of gene $j$ | MW |
-| $\gamma,\rho$ | initial mutation scale and decay rate | – |
-| $\mathcal{P}_s$ | population of island $s$ | – |
+| Symbol | Meaning | Symbol | Meaning |
+|---|---|---|---|
+| $N$ | number of units | $L_i^{t},U_i^{t}$ | ramp-effective lower and upper bounds (MW) |
+| $P_i^{t}$ | output of unit $i$ at period $t$ (MW) | $\Omega_i^{t}$ | admissible set after ramp and POZ removal (MW) |
+| $u_i^{t}$ | commitment state, 1 online / 0 offline | $u_{kj}$ | FCM membership of sample $j$ in cluster $k$ |
+| $a_i,b_i,c_i$ | fuel-cost coefficients | $\mathbf{c}_k$ | FCM cluster centre (MW) |
+| $d_i,e_i$ | valve-point amplitude and frequency | $m$ | FCM fuzzification parameter |
+| $P_i^{\min},P_i^{\max}$ | generation limits (MW) | $\alpha$ | BLX expansion parameter |
+| $P_D^{t}$ | demand at period $t$ (MW) | $\sigma_j$ | mutation standard deviation of gene $j$ (MW) |
+| $R_i^{U},R_i^{D}$ | ramp-up and ramp-down limits (MW/h) | $\gamma,\rho$ | initial mutation scale and decay rate |
+| $[P_{i,k}^{L},P_{i,k}^{U}]$ | $k$-th prohibited operating zone (MW) | $\mathcal{P}_s$ | population of island $s$ |
 
 ### Ramp- and POZ-feasible region
 
