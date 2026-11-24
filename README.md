@@ -111,13 +111,13 @@ $$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\q
 
 The decay turns broad exploration into fine exploitation. Ring migration moves the best members of island $s$ into the neighbouring island:
 
-$$\mathcal{M}_s^{g}=\operatorname{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\right),\qquad \mathcal{P}_{s+1}^{g}\leftarrow\left(\mathcal{P}_{s+1}^{g}\setminus\operatorname{Worst}_{K_{\text{mig}}}\left(\mathcal{P}_{s+1}^{g}\right)\right)\cup\mathcal{M}_s^{g}.$$
+$$\mathcal{M}_s^{g}=\mathrm{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\right),\qquad \mathcal{P}_{s+1}^{g}\leftarrow\left(\mathcal{P}_{s+1}^{g}\setminus\mathrm{Worst}_{K_{\text{mig}}}\left(\mathcal{P}_{s+1}^{g}\right)\right)\cup\mathcal{M}_s^{g}.$$
 
 ### Lamarckian refinement and fitness
 
 The local search perturbs one randomly chosen gene with $\sigma_{\text{ls}}=0.03\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right)$ and accepts it only if the cost falls:
 
-$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'~\text{if}~F(\boldsymbol{\theta}')\ltF(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{otherwise}~\boldsymbol{\theta}^{(\ell-1)}.$$
+$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'~\text{if}~F(\boldsymbol{\theta}')\lt F(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{otherwise}~\boldsymbol{\theta}^{(\ell-1)}.$$
 
 Residual infeasibility is penalised. The shortfall is
 
@@ -181,6 +181,49 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 |---|---|
 | `ELD_Test_System.xlsx` | Sheet1: `Unit`, `pmin`, `pmax`, `a`, `b`, `c`, `d`, `e`, `Pnow`, `rampup`, `rampdown`, `poz` |
 | `powerdemand.xlsx` | Sheet1: `load` |
+
+
+## Results
+
+### Figures
+
+![fig1_convergence_best_run](figures/fig1_convergence_best_run.png)
+
+![fig1b_convergence_mean](figures/fig1b_convergence_mean.png)
+
+![fig2_fcm_allruns](figures/fig2_fcm_allruns.png)
+
+![fig3_boxplot](figures/fig3_boxplot.png)
+
+![fig4_mean_std](figures/fig4_mean_std.png)
+
+![fig5_demand_vs_gen](figures/fig5_demand_vs_gen.png)
+
+![fig6_hourly_cost](figures/fig6_hourly_cost.png)
+
+![fig7_dispatch_stack](figures/fig7_dispatch_stack.png)
+
+![fig8_surplus](figures/fig8_surplus.png)
+
+### Result files
+
+- [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx)
+- [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx)
+- [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx)
+- [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx)
+- [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx)
+- [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx)
+- [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx)
+- [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx)
+- [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx)
+- [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx)
+- [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx)
+- [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx)
+- [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx)
+- [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx)
+- [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx)
+- [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx)
+
 
 ## Requirements
 
