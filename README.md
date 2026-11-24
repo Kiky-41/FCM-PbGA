@@ -220,13 +220,13 @@ ANOVA returns p 6.43e-116 and Friedman p 1.80e-27, so the six variants do not sh
 
 ### Paired tests against each baseline
 
-| Baseline | Wilcoxon p | t-test p | Tukey mean difference (USD) | Tukey q | Significant |
+| Baseline | GA | PSO | GWO | WOA | MeritOrder |
 |---|---|---|---|---|---|
-| GA | 4.03e-03 | 3.83e-03 | 1,519.58 | 4.14 | no |
-| PSO | 3.02e-11 | 5.27e-31 | 12,631.91 | 34.43 | yes |
-| GWO | 1.87e-07 | 5.62e-09 | 10,279.27 | 28.02 | yes |
-| WOA | 3.02e-11 | 3.10e-29 | 8,274.45 | 22.55 | yes |
-| MeritOrder | 1.21e-12 | 5.90e-57 | 14,499.60 | 39.52 | yes |
+| Wilcoxon p | 4.03e-03 | 3.02e-11 | 1.87e-07 | 3.02e-11 | 1.21e-12 |
+| t-test p | 3.83e-03 | 5.27e-31 | 5.62e-09 | 3.10e-29 | 5.90e-57 |
+| Tukey mean difference (USD) | 1,519.58 | 12,631.91 | 10,279.27 | 8,274.45 | 14,499.60 |
+| Tukey q | 4.14 | 34.43 | 28.02 | 22.55 | 39.52 |
+| Significant | no | yes | yes | yes | yes |
 
 Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p from 4.03e-03 against GA down to 1.21e-12 against merit order. Tukey agrees except for the size-matched GA, where the 1,519.58 USD gap gives q 4.14 and no significance; the t-test still separates that pair at p 3.83e-03, so the GA margin is small and depends on the test used.
 
@@ -256,13 +256,13 @@ Among the matched reruns only GA_matched survives: a 444.77 USD gap with t-test 
 
 ### Budget-matched rerun: Tukey and effect size
 
-| Baseline | Tukey mean difference (USD) | Tukey q | Cohen d, standard run | Cohen d, budget matched | Tukey significant |
+| Baseline | GA | PSO | GWO | WOA | MeritOrder |
 |---|---|---|---|---|---|
-| GA | 6,654.95 | 22.96 | -0.78 | 3.85 | yes |
-| PSO | 10,617.82 | 36.64 | -5.98 | -5.36 | yes |
-| GWO | 1,597.33 | 5.51 | -1.76 | 0.85 | yes |
-| WOA | 6,200.00 | 21.39 | -5.53 | -3.07 | yes |
-| MeritOrder | 26,646.27 | 91.94 | -17.52 | -17.52 | yes |
+| Tukey mean difference (USD) | 6,654.95 | 10,617.82 | 1,597.33 | 6,200.00 | 26,646.27 |
+| Tukey q | 22.96 | 36.64 | 5.51 | 21.39 | 91.94 |
+| Cohen d, standard run | -0.78 | -5.98 | -1.76 | -5.53 | -17.52 |
+| Cohen d, budget matched | 3.85 | -5.36 | 0.85 | -3.07 | -17.52 |
+| Tukey significant | yes | yes | yes | yes | yes |
 
 When every method is given the same evaluation budget the picture changes. FCM-PbGA is separated from all five baselines by Tukey, with gaps from 1,597.33 USD (q 5.51) against GWO up to 26,646.27 USD (q 91.94) against merit order, so the earlier tie with GA does not survive the budget correction. The two effect-size columns come from files that subtract in opposite directions, so compare their magnitude, not their sign.
 
