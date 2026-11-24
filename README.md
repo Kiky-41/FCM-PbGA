@@ -21,7 +21,7 @@ FCM-PbGA combines a feasibility-preserving chromosome with an island-based genet
 
 Only committed units contribute cost, and the valve-point term adds a sinusoidal ripple to the quadratic curve:
 
-$$\min F(\mathbf{P},\mathbf{u})=\sum_{i=1}^{N}u_i\left(a_i+b_iP_i+c_iP_i^2+\left|d_i\sin\!\left(e_i\left(P_i^{\min}-P_i\right)\right)\right|\right).$$
+$$\min F(\mathbf{P},\mathbf{u})=\sum_{i=1}^{N}u_i\left(a_i+b_iP_i+c_iP_i^2+\left|d_i\sin\left(e_i\left(P_i^{\min}-P_i\right)\right)\right|\right).$$
 
 The schedule must satisfy
 
@@ -60,14 +60,14 @@ Ramp limits make the bounds time-varying. An off-to-on transition starts from ze
 
 $$L_i^{t}=
 \begin{cases}
-0, & u_i^{t-1}=0,\ u_i^{t}=1,\\
-\max\!\left(P_i^{\min},P_i^{t-1}-R_i^{D}\right), & \text{otherwise},
+0, & u_i^{t-1}=0,~u_i^{t}=1,\\
+\max\left(P_i^{\min},P_i^{t-1}-R_i^{D}\right), & \text{otherwise},
 \end{cases}
 \qquad
 U_i^{t}=
 \begin{cases}
-\min\!\left(P_i^{\max},R_i^{U}\right), & u_i^{t-1}=0,\ u_i^{t}=1,\\
-\min\!\left(P_i^{\max},P_i^{t-1}+R_i^{U}\right), & \text{otherwise}.
+\min\left(P_i^{\max},R_i^{U}\right), & u_i^{t-1}=0,~u_i^{t}=1,\\
+\min\left(P_i^{\max},P_i^{t-1}+R_i^{U}\right), & \text{otherwise}.
 \end{cases}$$
 
 Removing the prohibited zones leaves a union of disjoint intervals:
@@ -84,16 +84,16 @@ The projection moves an infeasible value to the nearest admissible point, so cro
 
 Fuzzy C-Means minimises the weighted distance to the cluster centres:
 
-$$J_{\mathrm{FCM}}=\sum_{j=1}^{M}\sum_{k=1}^{C}u_{kj}^{m}\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2^2,\qquad \sum_{k=1}^{C}u_{kj}=1.$$
+$$J_{\mathrm{FCM}}=\sum_{j=1}^{M}\sum_{k=1}^{C}u_{kj}^{m}\left\Vert\mathbf{x}_j-\mathbf{c}_k\right\Vert_2^2,\qquad \sum_{k=1}^{C}u_{kj}=1.$$
 
 The centres and memberships are updated alternately:
 
 $$\mathbf{c}_k=\frac{\sum_{j=1}^{M}u_{kj}^{m}\mathbf{x}_j}{\sum_{j=1}^{M}u_{kj}^{m}},\qquad
-u_{kj}=\left(\sum_{l=1}^{C}\left(\frac{\left\|\mathbf{x}_j-\mathbf{c}_k\right\|_2}{\left\|\mathbf{x}_j-\mathbf{c}_l\right\|_2}\right)^{\frac{2}{m-1}}\right)^{-1}.$$
+u_{kj}=\left(\sum_{l=1}^{C}\left(\frac{\left\Vert\mathbf{x}_j-\mathbf{c}_k\right\Vert_2}{\left\Vert\mathbf{x}_j-\mathbf{c}_l\right\Vert_2}\right)^{\frac{2}{m-1}}\right)^{-1}.$$
 
 The membership equation gives a sample a high degree in a nearby cluster and a low degree in a distant one. The seed for period $t$ is the centre nearest to the previous dispatch:
 
-$$k^{*}=\arg\min_k\left\|\mathbf{c}_k-\mathbf{P}^{t-1}\right\|_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^{*}}.$$
+$$k^{*}=\arg\min_k\left\Vert\mathbf{c}_k-\mathbf{P}^{t-1}\right\Vert_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^{*}}.$$
 
 ### Genetic operators
 
@@ -103,11 +103,11 @@ $$\boldsymbol{\theta}^{\text{sel}}=\arg\min_{\boldsymbol{\theta}\in\mathcal{T}}F
 
 An offspring gene is either copied from the first parent or sampled in the expanded parental interval:
 
-$$\theta_j'\sim\mathcal{U}\!\left(\min(\theta_j^{(1)},\theta_j^{(2)})-\alpha\Delta_j,\ \max(\theta_j^{(1)},\theta_j^{(2)})+\alpha\Delta_j\right),\qquad \Delta_j=\left|\theta_j^{(1)}-\theta_j^{(2)}\right|.$$
+$$\theta_j'\sim\mathcal{U}\left(\min(\theta_j^{(1)},\theta_j^{(2)})-\alpha\Delta_j,~\max(\theta_j^{(1)},\theta_j^{(2)})+\alpha\Delta_j\right),\qquad \Delta_j=\left|\theta_j^{(1)}-\theta_j^{(2)}\right|.$$
 
 Mutation adds a Gaussian perturbation whose scale starts as a fraction of the unit range and decays over generations:
 
-$$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\qquad \sigma_j^{(0)}=\gamma\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right),\qquad \sigma_j^{(g+1)}=\max\!\left(\rho\sigma_j^{(g)},\sigma_j^{\min}\right).$$
+$$\theta_j\leftarrow\theta_j+\eta_j,\quad \eta_j\sim\mathcal{N}(0,\sigma_j^2),\qquad \sigma_j^{(0)}=\gamma\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right),\qquad \sigma_j^{(g+1)}=\max\left(\rho\sigma_j^{(g)},\sigma_j^{\min}\right).$$
 
 The decay turns broad exploration into fine exploitation. Ring migration moves the best members of island $s$ into the neighbouring island:
 
@@ -117,15 +117,15 @@ $$\mathcal{M}_s^{g}=\operatorname{Best}_{K_{\text{mig}}}\left(\mathcal{P}_s^{g}\
 
 The local search perturbs one randomly chosen gene with $\sigma_{\text{ls}}=0.03\left(P_{i_j}^{\max}-P_{i_j}^{\min}\right)$ and accepts it only if the cost falls:
 
-$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'\ \text{if}\ F(\boldsymbol{\theta}')<F(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{otherwise}\ \boldsymbol{\theta}^{(\ell-1)}.$$
+$$\boldsymbol{\theta}^{(\ell)}=\boldsymbol{\theta}'~\text{if}~F(\boldsymbol{\theta}')<F(\boldsymbol{\theta}^{(\ell-1)}),\quad \text{otherwise}~\boldsymbol{\theta}^{(\ell-1)}.$$
 
 Residual infeasibility is penalised. The shortfall is
 
-$$\delta^{t}=\max\!\left(0,P_D^{t}-\sum_iP_i^{t}\right),$$
+$$\delta^{t}=\max\left(0,P_D^{t}-\sum_iP_i^{t}\right),$$
 
 and the final fitness is
 
-$$J=F+\lambda(\delta^{t})^2+\sum_{i\in\mathcal{V}^{t}}\left(\beta_0+\beta_1\min\left\{\left|P_i-P_{i,k}^{L}\right|,\left|P_i-P_{i,k}^{U}\right|\right\}\right),$$
+$$J=F+\lambda(\delta^{t})^2+\sum_{i\in\mathcal{V}^{t}}\left(\beta_0+\beta_1\min\left\lbrace\left|P_i-P_{i,k}^{L}\right|,\left|P_i-P_{i,k}^{U}\right|\right\rbrace\right),$$
 
 where $\mathcal{V}^{t}$ is the set of units still inside a prohibited zone. The quadratic term punishes unserved demand, and the linear term punishes residual POZ violations.
 
