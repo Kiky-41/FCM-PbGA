@@ -93,7 +93,7 @@ u_{kj}=\left(\sum_{l=1}^{C}\left(\frac{\left\Vert\mathbf{x}_j-\mathbf{c}_k\right
 
 The membership equation gives a sample a high degree in a nearby cluster and a low degree in a distant one. The seed for period $t$ is the centre nearest to the previous dispatch:
 
-$$k^{*}=\arg\min_k\left\Vert\mathbf{c}_k-\mathbf{P}^{t-1}\right\Vert_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^{*}}.$$
+$$k^{\ast}=\arg\min_k\left\Vert\mathbf{c}_k-\mathbf{P}^{t-1}\right\Vert_2,\qquad \mathbf{P}^{t}_{\text{seed}}=\mathbf{c}_{k^{\ast}}.$$
 
 ### Genetic operators
 
