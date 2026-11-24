@@ -185,29 +185,52 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 ## Results
 
-| Metric | Value |
+### IEEE 15-unit, 24 hours, 30 runs
+
+| Method | Mean cost (USD) | Std | Min | Max |
+|---|---|---|---|---|
+| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| FCM_PbGA_v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
+| GA_vanilla | 663,692.91 | 1,733.43 | 659,747.58 | 666,989.51 |
+| PSO_vanilla | 676,324.83 | 2,562.30 | 673,125.42 | 683,582.42 |
+| GWO_vanilla | 666,045.56 | 2,238.93 | 662,072.66 | 669,881.22 |
+| WOA_vanilla | 674,320.01 | 2,239.87 | 669,046.26 | 680,054.54 |
+| MeritOrder_vanilla | 688,819.61 | 0.00 | 688,819.61 | 688,819.61 |
+| GA_matched | 655,518.39 | 1,165.25 | 653,461.35 | 657,699.70 |
+| PSO_matched | 672,791.16 | 1,798.52 | 667,779.74 | 675,980.40 |
+| GWO_matched | 660,576.00 | 1,544.03 | 657,060.42 | 663,418.45 |
+| WOA_matched | 668,373.34 | 1,874.98 | 664,103.91 | 673,550.55 |
+
+### Ablation over 30 runs
+
+| Variant | Mean cost (USD) | Std | Min | Max |
+|---|---|---|---|---|
+| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| NoFCM | 662,489.74 | 1,356.36 | 660,432.14 | 665,373.39 |
+| NoLS | 661,842.65 | 1,627.67 | 658,385.11 | 665,665.84 |
+| NoIslands | 656,904.09 | 1,432.79 | 654,180.22 | 659,503.24 |
+| NoMigration | 663,542.93 | 1,633.09 | 660,793.81 | 666,676.58 |
+
+### Result workbooks
+
+| File | Content |
 |---|---|
-| Test case | IEEE 15-unit, 24 hours, VPE + POZ + ramp + UC |
-| Best cost | USD 655,073.62 |
-| Standard deviation | USD 1,469 |
-| Trials | 30 |
-| Committed units | only the units needed at each hour |
-| Result file | [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx) |
-| Result file | [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx) |
-| Result file | [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx) |
-| Result file | [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx) |
-| Result file | [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx) |
-| Result file | [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx) |
-| Result file | [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx) |
-| Result file | [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx) |
-| Result file | [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx) |
-| Result file | [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx) |
-| Result file | [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx) |
-| Result file | [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx) |
-| Result file | [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx) |
-| Result file | [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx) |
-| Result file | [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx) |
-| Result file | [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx) |
+| [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx) | raw output |
+| [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx) | raw output |
+| [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx) | raw output |
+| [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx) | raw output |
+| [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx) | raw output |
+| [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx) | raw output |
+| [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx) | raw output |
+| [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx) | raw output |
+| [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx) | raw output |
+| [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx) | raw output |
+| [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx) | raw output |
+| [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx) | raw output |
+| [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx) | raw output |
+| [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx) | raw output |
+| [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx) | raw output |
+| [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx) | raw output |
 
 
 ## Requirements
