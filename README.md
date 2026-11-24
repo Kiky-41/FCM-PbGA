@@ -236,6 +236,62 @@ ANOVA returns p 6.43e-116 and Friedman p 1.80e-27, so the six variants do not sh
 
 Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p from 4.0e-3 against GA down to 1.2e-12 against merit order. Tukey agrees except for the size-matched GA, where the 1,519.58 USD gap gives q 4.14 and no significance; the t-test still separates that pair at p 0.0038, so the GA margin is small and depends on the test used.
 
+### All comparisons against FCM-PbGA_v4, 30 runs
+
+| Method | Mean difference (USD) | t-test p | Wilcoxon p | Cohen d | Effect | Rejected at 5% |
+|---|---|---|---|---|---|---|
+| Full | -7,099.72 | 1.58e-21 | 3.34e-11 | -3.85 | large | yes |
+| GA-vanilla | -8,619.29 | 1.50e-28 | 3.02e-11 | -5.36 | large | yes |
+| PSO-vanilla | -21,251.21 | 1.44e-43 | 3.02e-11 | -10.18 | large | yes |
+| GWO-vanilla | -10,971.94 | 2.80e-30 | 3.02e-11 | -5.79 | large | yes |
+| WOA-vanilla | -19,246.39 | 1.56e-43 | 3.02e-11 | -10.16 | large | yes |
+| MeritOrder-vanilla | -33,745.99 | 2.12e-72 | 1.21e-12 | -32.49 | large | yes |
+| GA-matched | -444.77 | 1.99e-01 | 3.55e-01 | -0.34 | small | no |
+| PSO-matched | -17,717.54 | 5.39e-45 | 3.02e-11 | -10.79 | large | yes |
+| GWO-matched | -5,502.38 | 1.89e-20 | 4.98e-11 | -3.65 | large | yes |
+| WOA-matched | -13,299.71 | 1.80e-37 | 3.02e-11 | -7.90 | large | yes |
+
+Against the eight unmatched baselines the tuned variant wins by 7,099.72 to 33,745.99 USD, with every paired test significant and Cohen d from -3.85 to -32.49. The size-matched GA is the one exception: a 444.77 USD gap with t-test p 0.199, Wilcoxon p 0.355 and d -0.34, so that pair is a tie.
+
+### Budget-matched rerun: Tukey and effect size
+
+| Baseline | Tukey mean difference (USD) | Tukey q | Cohen d, standard run | Cohen d, budget matched | Tukey significant |
+|---|---|---|---|---|---|
+| GA | 6,654.95 | 22.96 | -0.78 | 3.85 | yes |
+| PSO | 10,617.82 | 36.64 | -5.98 | -5.36 | yes |
+| GWO | 1,597.33 | 5.51 | -1.76 | 0.85 | yes |
+| WOA | 6,200.00 | 21.39 | -5.53 | -3.07 | yes |
+| MeritOrder | 26,646.27 | 91.94 | -17.52 | -17.52 | yes |
+
+When every method is given the same evaluation budget the picture changes. FCM-PbGA is separated from all five baselines by Tukey, with gaps from 1,597.33 USD (q 5.51) against GWO up to 26,646.27 USD (q 91.94) against merit order, so the earlier tie with GA does not survive the budget correction. The two effect-size columns come from files that subtract in opposite directions, so compare their magnitude, not their sign.
+
+### Sensitivity, single seed per setting
+
+| Parameter | Value | Cost (USD) | Cost relative to default run (%) |
+|---|---|---|---|
+| Islands | 1 | 659,126.20 | 100.138 |
+| Islands | 2 | 658,217.16 | 100.000 |
+| Islands | 4 | 661,285.42 | 100.466 |
+| Islands | 6 | 661,531.94 | 100.504 |
+| Islands | 8 | 665,590.24 | 101.120 |
+| PopSize | 80 | 671,353.63 | 101.618 |
+| PopSize | 120 | 667,768.56 | 101.076 |
+| PopSize | 160 | 663,768.75 | 100.470 |
+| PopSize | 200 | 661,531.94 | 100.132 |
+| PopSize | 250 | 660,661.54 | 100.000 |
+| Generations | 100 | 663,218.70 | 100.255 |
+| Generations | 150 | 661,808.49 | 100.042 |
+| Generations | 200 | 662,903.48 | 100.207 |
+| Generations | 250 | 663,327.51 | 100.271 |
+| Generations | 300 | 661,531.94 | 100.000 |
+| FCM_Clusters | 2 | 662,674.03 | 100.173 |
+| FCM_Clusters | 3 | 661,635.26 | 100.016 |
+| FCM_Clusters | 4 | 662,061.94 | 100.080 |
+| FCM_Clusters | 5 | 661,531.94 | 100.000 |
+| FCM_Clusters | 6 | 662,802.00 | 100.192 |
+
+Cost is flat in population size down to 200, then rises 1.62% at 80, and flat in cluster count with a shallow minimum at five clusters. Island count matters little between two and six, and the generation cap is flat from 150 upward. The configured default (250 population, 5 clusters) is at or near the minimum of every sweep.
+
 ### Result workbooks
 
 | File | Content |
