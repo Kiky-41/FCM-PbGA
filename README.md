@@ -187,31 +187,23 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 ### IEEE 15-unit, 24 hours, 30 runs
 
-| Method | Mean cost (USD) | Std | Min | Max |
-|---|---|---|---|---|
-| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
-| FCM_PbGA_v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
-| GA_vanilla | 663,692.91 | 1,733.43 | 659,747.58 | 666,989.51 |
-| PSO_vanilla | 676,324.83 | 2,562.30 | 673,125.42 | 683,582.42 |
-| GWO_vanilla | 666,045.56 | 2,238.93 | 662,072.66 | 669,881.22 |
-| WOA_vanilla | 674,320.01 | 2,239.87 | 669,046.26 | 680,054.54 |
-| MeritOrder_vanilla | 688,819.61 | 0.00 | 688,819.61 | 688,819.61 |
-| GA_matched | 655,518.39 | 1,165.25 | 653,461.35 | 657,699.70 |
-| PSO_matched | 672,791.16 | 1,798.52 | 667,779.74 | 675,980.40 |
-| GWO_matched | 660,576.00 | 1,544.03 | 657,060.42 | 663,418.45 |
-| WOA_matched | 668,373.34 | 1,874.98 | 664,103.91 | 673,550.55 |
+| Method | Full | FCM_PbGA_v4 | GA_vanilla | PSO_vanilla | GWO_vanilla | WOA_vanilla | MeritOrder_vanilla | GA_matched | PSO_matched | GWO_matched | WOA_matched |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Mean cost (USD) | 662,173.34 | 655,073.62 | 663,692.91 | 676,324.83 | 666,045.56 | 674,320.01 | 688,819.61 | 655,518.39 | 672,791.16 | 660,576.00 | 668,373.34 |
+| Std | 2,150.85 | 1,469.06 | 1,733.43 | 2,562.30 | 2,238.93 | 2,239.87 | 0.00 | 1,165.25 | 1,798.52 | 1,544.03 | 1,874.98 |
+| Min | 657,914.50 | 650,837.80 | 659,747.58 | 673,125.42 | 662,072.66 | 669,046.26 | 688,819.61 | 653,461.35 | 667,779.74 | 657,060.42 | 664,103.91 |
+| Max | 667,154.23 | 658,108.69 | 666,989.51 | 683,582.42 | 669,881.22 | 680,054.54 | 688,819.61 | 657,699.70 | 675,980.40 | 663,418.45 | 673,550.55 |
 
 The tuned FCM-PbGA run is the cheapest of the eleven entries at 655,073.62 USD, 1.30% below vanilla GA and 0.07% below the size-matched GA. Every GA-family variant beats the merit-order schedule at 688,819.61 USD, while PSO and WOA trail both GA variants.
 
 ### Ablation over 30 runs
 
-| Variant | Mean cost (USD) | Std | Min | Max |
-|---|---|---|---|---|
-| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
-| NoFCM | 662,489.74 | 1,356.36 | 660,432.14 | 665,373.39 |
-| NoLS | 661,842.65 | 1,627.67 | 658,385.11 | 665,665.84 |
-| NoIslands | 656,904.09 | 1,432.79 | 654,180.22 | 659,503.24 |
-| NoMigration | 663,542.93 | 1,633.09 | 660,793.81 | 666,676.58 |
+| Variant | Full | NoFCM | NoLS | NoIslands | NoMigration |
+|---|---|---|---|---|---|
+| Mean cost (USD) | 662,173.34 | 662,489.74 | 661,842.65 | 656,904.09 | 663,542.93 |
+| Std | 2,150.85 | 1,356.36 | 1,627.67 | 1,432.79 | 1,633.09 |
+| Min | 657,914.50 | 660,432.14 | 658,385.11 | 654,180.22 | 660,793.81 |
+| Max | 667,154.23 | 665,373.39 | 665,665.84 | 659,503.24 | 666,676.58 |
 
 Dropping islands gives 656,904.09 USD, 0.80% under the full method, so islands do not pay for themselves on this case. Dropping line search lowers the mean by 0.05%, dropping FCM raises it by 0.05%, and dropping migration raises it by 0.21%. All gaps sit inside or near one standard deviation of the full run.
 
@@ -238,18 +230,14 @@ Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p fr
 
 ### All comparisons against FCM-PbGA_v4, 30 runs
 
-| Method | Mean difference (USD) | t-test p | Wilcoxon p | Cohen d | Effect | Rejected at 5% |
-|---|---|---|---|---|---|---|
-| Full | -7,099.72 | 1.58e-21 | 3.34e-11 | -3.85 | large | yes |
-| GA-vanilla | -8,619.29 | 1.50e-28 | 3.02e-11 | -5.36 | large | yes |
-| PSO-vanilla | -21,251.21 | 1.44e-43 | 3.02e-11 | -10.18 | large | yes |
-| GWO-vanilla | -10,971.94 | 2.80e-30 | 3.02e-11 | -5.79 | large | yes |
-| WOA-vanilla | -19,246.39 | 1.56e-43 | 3.02e-11 | -10.16 | large | yes |
-| MeritOrder-vanilla | -33,745.99 | 2.12e-72 | 1.21e-12 | -32.49 | large | yes |
-| GA-matched | -444.77 | 1.99e-01 | 3.55e-01 | -0.34 | small | no |
-| PSO-matched | -17,717.54 | 5.39e-45 | 3.02e-11 | -10.79 | large | yes |
-| GWO-matched | -5,502.38 | 1.89e-20 | 4.98e-11 | -3.65 | large | yes |
-| WOA-matched | -13,299.71 | 1.80e-37 | 3.02e-11 | -7.90 | large | yes |
+| Method | Full | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla | MeritOrder-vanilla | GA-matched | PSO-matched | GWO-matched | WOA-matched |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Mean difference (USD) | -7,099.72 | -8,619.29 | -21,251.21 | -10,971.94 | -19,246.39 | -33,745.99 | -444.77 | -17,717.54 | -5,502.38 | -13,299.71 |
+| t-test p | 1.58e-21 | 1.50e-28 | 1.44e-43 | 2.80e-30 | 1.56e-43 | 2.12e-72 | 1.99e-01 | 5.39e-45 | 1.89e-20 | 1.80e-37 |
+| Wilcoxon p | 3.34e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 | 1.21e-12 | 3.55e-01 | 3.02e-11 | 4.98e-11 | 3.02e-11 |
+| Cohen d | -3.85 | -5.36 | -10.18 | -5.79 | -10.16 | -32.49 | -0.34 | -10.79 | -3.65 | -7.90 |
+| Effect | large | large | large | large | large | large | small | large | large | large |
+| Rejected at 5% | yes | yes | yes | yes | yes | yes | no | yes | yes | yes |
 
 Against the eight unmatched baselines the tuned variant wins by 7,099.72 to 33,745.99 USD, with every paired test significant and Cohen d from -3.85 to -32.49. The size-matched GA is the one exception: a 444.77 USD gap with t-test p 0.199, Wilcoxon p 0.355 and d -0.34, so that pair is a tie.
 
@@ -267,28 +255,10 @@ When every method is given the same evaluation budget the picture changes. FCM-P
 
 ### Sensitivity, single seed per setting
 
-| Parameter | Value | Cost (USD) | Cost relative to default run (%) |
-|---|---|---|---|
-| Islands | 1 | 659,126.20 | 100.138 |
-| Islands | 2 | 658,217.16 | 100.000 |
-| Islands | 4 | 661,285.42 | 100.466 |
-| Islands | 6 | 661,531.94 | 100.504 |
-| Islands | 8 | 665,590.24 | 101.120 |
-| PopSize | 80 | 671,353.63 | 101.618 |
-| PopSize | 120 | 667,768.56 | 101.076 |
-| PopSize | 160 | 663,768.75 | 100.470 |
-| PopSize | 200 | 661,531.94 | 100.132 |
-| PopSize | 250 | 660,661.54 | 100.000 |
-| Generations | 100 | 663,218.70 | 100.255 |
-| Generations | 150 | 661,808.49 | 100.042 |
-| Generations | 200 | 662,903.48 | 100.207 |
-| Generations | 250 | 663,327.51 | 100.271 |
-| Generations | 300 | 661,531.94 | 100.000 |
-| FCM_Clusters | 2 | 662,674.03 | 100.173 |
-| FCM_Clusters | 3 | 661,635.26 | 100.016 |
-| FCM_Clusters | 4 | 662,061.94 | 100.080 |
-| FCM_Clusters | 5 | 661,531.94 | 100.000 |
-| FCM_Clusters | 6 | 662,802.00 | 100.192 |
+| Parameter / Value | Islands 1 | Islands 2 | Islands 4 | Islands 6 | Islands 8 | PopSize 80 | PopSize 120 | PopSize 160 | PopSize 200 | PopSize 250 | Generations 100 | Generations 150 | Generations 200 | Generations 250 | Generations 300 | FCM_Clusters 2 | FCM_Clusters 3 | FCM_Clusters 4 | FCM_Clusters 5 | FCM_Clusters 6 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Cost (USD) | 659,126.20 | 658,217.16 | 661,285.42 | 661,531.94 | 665,590.24 | 671,353.63 | 667,768.56 | 663,768.75 | 661,531.94 | 660,661.54 | 663,218.70 | 661,808.49 | 662,903.48 | 663,327.51 | 661,531.94 | 662,674.03 | 661,635.26 | 662,061.94 | 661,531.94 | 662,802.00 |
+| Cost relative to default run (%) | 100.138 | 100.000 | 100.466 | 100.504 | 101.120 | 101.618 | 101.076 | 100.470 | 100.132 | 100.000 | 100.255 | 100.042 | 100.207 | 100.271 | 100.000 | 100.173 | 100.016 | 100.080 | 100.000 | 100.192 |
 
 Cost is flat in population size down to 200, then rises 1.62% at 80, and flat in cluster count with a shallow minimum at five clusters. Island count matters little between two and six, and the generation cap is flat from 150 upward. The configured default (250 population, 5 clusters) is at or near the minimum of every sweep.
 
