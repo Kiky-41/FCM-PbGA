@@ -178,23 +178,28 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 ### Vanilla baselines, 30 runs
 
-| Metric | Full | FCM-PbGA-v4 | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla | MeritOrder-vanilla |
-|---|---|---|---|---|---|---|---|
-| Mean | 662,173.34 | 655,073.62 | 663,692.91 | 676,324.83 | 666,045.56 | 674,320.01 | 688,819.61 |
-| Std | 2,150.85 | 1,469.06 | 1,733.43 | 2,562.30 | 2,238.93 | 2,239.87 | 0.00 |
-| Min | 657,914.50 | 650,837.80 | 659,747.58 | 673,125.42 | 662,072.66 | 669,046.26 | 688,819.61 |
-| Max | 667,154.23 | 658,108.69 | 666,989.51 | 683,582.42 | 669,881.22 | 680,054.54 | 688,819.61 |
+| Method | Mean cost (USD) | Std | Min | Max |
+|---|---|---|---|---|
+| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| FCM-PbGA-v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
+| GA-vanilla | 663,692.91 | 1,733.43 | 659,747.58 | 666,989.51 |
+| PSO-vanilla | 676,324.83 | 2,562.30 | 673,125.42 | 683,582.42 |
+| GWO-vanilla | 666,045.56 | 2,238.93 | 662,072.66 | 669,881.22 |
+| WOA-vanilla | 674,320.01 | 2,239.87 | 669,046.26 | 680,054.54 |
+| MeritOrder-vanilla | 688,819.61 | 0.00 | 688,819.61 | 688,819.61 |
 
 FCM-PbGA_v4 is the cheapest entry at 655,073.62 USD, 1.30% under vanilla GA, 1.65% under GWO and 4.90% under the merit-order schedule. PSO and WOA sit 3.14% and 2.85% above the tuned run, so both trail the GA family.
 
 ### Size-matched baselines, 30 runs
 
-| Metric | Full | FCM-PbGA-v4 | GA-matched | PSO-matched | GWO-matched | WOA-matched |
-|---|---|---|---|---|---|---|
-| Mean | 662,173.34 | 655,073.62 | 655,518.39 | 672,791.16 | 660,576.00 | 668,373.34 |
-| Std | 2,150.85 | 1,469.06 | 1,165.25 | 1,798.52 | 1,544.03 | 1,874.98 |
-| Min | 657,914.50 | 650,837.80 | 653,461.35 | 667,779.74 | 657,060.42 | 664,103.91 |
-| Max | 667,154.23 | 658,108.69 | 657,699.70 | 675,980.40 | 663,418.45 | 673,550.55 |
+| Method | Mean cost (USD) | Std | Min | Max |
+|---|---|---|---|---|
+| Full | 662,173.34 | 2,150.85 | 657,914.50 | 667,154.23 |
+| FCM-PbGA-v4 | 655,073.62 | 1,469.06 | 650,837.80 | 658,108.69 |
+| GA-matched | 655,518.39 | 1,165.25 | 653,461.35 | 657,699.70 |
+| PSO-matched | 672,791.16 | 1,798.52 | 667,779.74 | 675,980.40 |
+| GWO-matched | 660,576.00 | 1,544.03 | 657,060.42 | 663,418.45 |
+| WOA-matched | 668,373.34 | 1,874.98 | 664,103.91 | 673,550.55 |
 
 Against the size-matched reruns the margin shrinks: FCM-PbGA_v4 is 0.07% under GA_matched, 0.83% under GWO_matched, 2.63% under PSO_matched and 1.99% under WOA_matched. The equal-budget GA is effectively tied, which is the comparison the paper treats as its hardest case.
 
