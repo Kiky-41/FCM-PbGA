@@ -185,44 +185,29 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 ## Results
 
-### Figures
-
-![fig1_convergence_best_run](figures/fig1_convergence_best_run.png)
-
-![fig1b_convergence_mean](figures/fig1b_convergence_mean.png)
-
-![fig2_fcm_allruns](figures/fig2_fcm_allruns.png)
-
-![fig3_boxplot](figures/fig3_boxplot.png)
-
-![fig4_mean_std](figures/fig4_mean_std.png)
-
-![fig5_demand_vs_gen](figures/fig5_demand_vs_gen.png)
-
-![fig6_hourly_cost](figures/fig6_hourly_cost.png)
-
-![fig7_dispatch_stack](figures/fig7_dispatch_stack.png)
-
-![fig8_surplus](figures/fig8_surplus.png)
-
-### Result files
-
-- [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx)
-- [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx)
-- [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx)
-- [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx)
-- [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx)
-- [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx)
-- [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx)
-- [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx)
-- [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx)
-- [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx)
-- [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx)
-- [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx)
-- [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx)
-- [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx)
-- [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx)
-- [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx)
+| Metric | Value |
+|---|---|
+| Test case | IEEE 15-unit, 24 hours, VPE + POZ + ramp + UC |
+| Best cost | USD 655,073.62 |
+| Standard deviation | USD 1,469 |
+| Trials | 30 |
+| Committed units | only the units needed at each hour |
+| Result file | [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx) |
+| Result file | [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx) |
+| Result file | [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx) |
+| Result file | [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx) |
+| Result file | [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx) |
+| Result file | [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx) |
+| Result file | [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx) |
+| Result file | [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx) |
+| Result file | [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx) |
+| Result file | [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx) |
+| Result file | [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx) |
+| Result file | [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx) |
+| Result file | [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx) |
+| Result file | [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx) |
+| Result file | [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx) |
+| Result file | [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx) |
 
 
 ## Requirements
