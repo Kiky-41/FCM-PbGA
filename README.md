@@ -215,6 +215,27 @@ The tuned FCM-PbGA run is the cheapest of the eleven entries at 655,073.62 USD, 
 
 Dropping islands gives 656,904.09 USD, 0.80% under the full method, so islands do not pay for themselves on this case. Dropping line search lowers the mean by 0.05%, dropping FCM raises it by 0.05%, and dropping migration raises it by 0.21%. All gaps sit inside or near one standard deviation of the full run.
 
+### Omnibus tests, 30 runs
+
+| Test | p-value |
+|---|---|
+| ANOVA | 6.43e-116 |
+| Friedman | 1.80e-27 |
+
+ANOVA returns p 6.43e-116 and Friedman p 1.80e-27, so the six variants do not share a mean or median at any conventional significance level.
+
+### Paired tests against each baseline
+
+| Baseline | Wilcoxon p | t-test p | Tukey mean difference (USD) | Tukey q | Significant |
+|---|---|---|---|---|---|
+| GA | 4.03e-03 | 3.83e-03 | 1,519.58 | 4.14 | no |
+| PSO | 3.02e-11 | 5.27e-31 | 12,631.91 | 34.43 | yes |
+| GWO | 1.87e-07 | 5.62e-09 | 10,279.27 | 28.02 | yes |
+| WOA | 3.02e-11 | 3.10e-29 | 8,274.45 | 22.55 | yes |
+| MeritOrder | 1.21e-12 | 5.90e-57 | 14,499.60 | 39.52 | yes |
+
+Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p from 4.0e-3 against GA down to 1.2e-12 against merit order. Tukey agrees except for the size-matched GA, where the 1,519.58 USD gap gives q 4.14 and no significance; the t-test still separates that pair at p 0.0038, so the GA margin is small and depends on the test used.
+
 ### Result workbooks
 
 | File | Content |
