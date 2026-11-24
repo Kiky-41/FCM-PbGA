@@ -185,16 +185,27 @@ Input data is **not included**. Place files in `data/` (notebooks) or next to th
 
 ## Results
 
-### IEEE 15-unit, 24 hours, 30 runs
+### Vanilla baselines, 30 runs
 
-| Method | Full | FCM_PbGA_v4 | GA_vanilla | PSO_vanilla | GWO_vanilla | WOA_vanilla | MeritOrder_vanilla | GA_matched | PSO_matched | GWO_matched | WOA_matched |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Mean cost (USD) | 662,173.34 | 655,073.62 | 663,692.91 | 676,324.83 | 666,045.56 | 674,320.01 | 688,819.61 | 655,518.39 | 672,791.16 | 660,576.00 | 668,373.34 |
-| Std | 2,150.85 | 1,469.06 | 1,733.43 | 2,562.30 | 2,238.93 | 2,239.87 | 0.00 | 1,165.25 | 1,798.52 | 1,544.03 | 1,874.98 |
-| Min | 657,914.50 | 650,837.80 | 659,747.58 | 673,125.42 | 662,072.66 | 669,046.26 | 688,819.61 | 653,461.35 | 667,779.74 | 657,060.42 | 664,103.91 |
-| Max | 667,154.23 | 658,108.69 | 666,989.51 | 683,582.42 | 669,881.22 | 680,054.54 | 688,819.61 | 657,699.70 | 675,980.40 | 663,418.45 | 673,550.55 |
+| Metric | Full | FCM-PbGA-v4 | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla | MeritOrder-vanilla |
+|---|---|---|---|---|---|---|---|
+| Mean | 662,173.34 | 655,073.62 | 663,692.91 | 676,324.83 | 666,045.56 | 674,320.01 | 688,819.61 |
+| Std | 2,150.85 | 1,469.06 | 1,733.43 | 2,562.30 | 2,238.93 | 2,239.87 | 0.00 |
+| Min | 657,914.50 | 650,837.80 | 659,747.58 | 673,125.42 | 662,072.66 | 669,046.26 | 688,819.61 |
+| Max | 667,154.23 | 658,108.69 | 666,989.51 | 683,582.42 | 669,881.22 | 680,054.54 | 688,819.61 |
 
-The tuned FCM-PbGA run is the cheapest of the eleven entries at 655,073.62 USD, 1.30% below vanilla GA and 0.07% below the size-matched GA. Every GA-family variant beats the merit-order schedule at 688,819.61 USD, while PSO and WOA trail both GA variants.
+FCM-PbGA_v4 is the cheapest entry at 655,073.62 USD, 1.30% under vanilla GA, 1.65% under GWO and 4.90% under the merit-order schedule. PSO and WOA sit 3.14% and 2.85% above the tuned run, so both trail the GA family.
+
+### Size-matched baselines, 30 runs
+
+| Metric | Full | FCM-PbGA-v4 | GA-matched | PSO-matched | GWO-matched | WOA-matched |
+|---|---|---|---|---|---|---|
+| Mean | 662,173.34 | 655,073.62 | 655,518.39 | 672,791.16 | 660,576.00 | 668,373.34 |
+| Std | 2,150.85 | 1,469.06 | 1,165.25 | 1,798.52 | 1,544.03 | 1,874.98 |
+| Min | 657,914.50 | 650,837.80 | 653,461.35 | 667,779.74 | 657,060.42 | 664,103.91 |
+| Max | 667,154.23 | 658,108.69 | 657,699.70 | 675,980.40 | 663,418.45 | 673,550.55 |
+
+Against the size-matched reruns the margin shrinks: FCM-PbGA_v4 is 0.07% under GA_matched, 0.83% under GWO_matched, 2.63% under PSO_matched and 1.99% under WOA_matched. The equal-budget GA is effectively tied, which is the comparison the paper treats as its hardest case.
 
 ### Ablation over 30 runs
 
@@ -226,20 +237,31 @@ ANOVA returns p 6.43e-116 and Friedman p 1.80e-27, so the six variants do not sh
 | WOA | 3.02e-11 | 3.10e-29 | 8,274.45 | 22.55 | yes |
 | MeritOrder | 1.21e-12 | 5.90e-57 | 14,499.60 | 39.52 | yes |
 
-Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p from 4.0e-3 against GA down to 1.2e-12 against merit order. Tukey agrees except for the size-matched GA, where the 1,519.58 USD gap gives q 4.14 and no significance; the t-test still separates that pair at p 0.0038, so the GA margin is small and depends on the test used.
+Every baseline is separated from FCM-PbGA at the 5% level by Wilcoxon, with p from 4.03e-03 against GA down to 1.21e-12 against merit order. Tukey agrees except for the size-matched GA, where the 1,519.58 USD gap gives q 4.14 and no significance; the t-test still separates that pair at p 3.83e-03, so the GA margin is small and depends on the test used.
 
-### All comparisons against FCM-PbGA_v4, 30 runs
+### Comparisons, vanilla baselines
 
-| Method | Full | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla | MeritOrder-vanilla | GA-matched | PSO-matched | GWO-matched | WOA-matched |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Mean difference (USD) | -7,099.72 | -8,619.29 | -21,251.21 | -10,971.94 | -19,246.39 | -33,745.99 | -444.77 | -17,717.54 | -5,502.38 | -13,299.71 |
-| t-test p | 1.58e-21 | 1.50e-28 | 1.44e-43 | 2.80e-30 | 1.56e-43 | 2.12e-72 | 1.99e-01 | 5.39e-45 | 1.89e-20 | 1.80e-37 |
-| Wilcoxon p | 3.34e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 | 1.21e-12 | 3.55e-01 | 3.02e-11 | 4.98e-11 | 3.02e-11 |
-| Cohen d | -3.85 | -5.36 | -10.18 | -5.79 | -10.16 | -32.49 | -0.34 | -10.79 | -3.65 | -7.90 |
-| Effect | large | large | large | large | large | large | small | large | large | large |
-| Rejected at 5% | yes | yes | yes | yes | yes | yes | no | yes | yes | yes |
+| Metric | Full | GA-vanilla | PSO-vanilla | GWO-vanilla | WOA-vanilla |
+|---|---|---|---|---|---|
+| Mean difference (USD) | -7,099.72 | -8,619.29 | -21,251.21 | -10,971.94 | -19,246.39 |
+| t-test p | 1.58e-21 | 1.50e-28 | 1.44e-43 | 2.80e-30 | 1.56e-43 |
+| Wilcoxon p | 3.34e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 | 3.02e-11 |
+| Cohen d | -3.85 | -5.36 | -10.18 | -5.79 | -10.16 |
+| Rejected at 5% | yes | yes | yes | yes | yes |
 
-Against the eight unmatched baselines the tuned variant wins by 7,099.72 to 33,745.99 USD, with every paired test significant and Cohen d from -3.85 to -32.49. The size-matched GA is the one exception: a 444.77 USD gap with t-test p 0.199, Wilcoxon p 0.355 and d -0.34, so that pair is a tie.
+Against the five vanilla baselines the tuned variant wins by 7,099.72 to 21,251.21 USD, with t-test p between 1.58e-21 and 1.44e-43, Wilcoxon p near 3e-11 and Cohen d from -3.85 to -10.18. Every pair is rejected at 5%.
+
+### Comparisons, size-matched baselines
+
+| Metric | GA-matched | PSO-matched | GWO-matched | WOA-matched |
+|---|---|---|---|---|
+| Mean difference (USD) | -444.77 | -17,717.54 | -5,502.38 | -13,299.71 |
+| t-test p | 1.99e-01 | 5.39e-45 | 1.89e-20 | 1.80e-37 |
+| Wilcoxon p | 3.55e-01 | 3.02e-11 | 4.98e-11 | 3.02e-11 |
+| Cohen d | -0.34 | -10.79 | -3.65 | -7.90 |
+| Rejected at 5% | no | yes | yes | yes |
+
+Among the matched reruns only GA_matched survives: a 444.77 USD gap with t-test p 0.199, Wilcoxon p 0.355 and d -0.34, so that pair is a tie. PSO_matched, GWO_matched and WOA_matched are all rejected, with gaps of 17,717.54, 5,502.38 and 13,299.71 USD and effect sizes from -3.65 to -10.79.
 
 ### Budget-matched rerun: Tukey and effect size
 
@@ -253,35 +275,57 @@ Against the eight unmatched baselines the tuned variant wins by 7,099.72 to 33,7
 
 When every method is given the same evaluation budget the picture changes. FCM-PbGA is separated from all five baselines by Tukey, with gaps from 1,597.33 USD (q 5.51) against GWO up to 26,646.27 USD (q 91.94) against merit order, so the earlier tie with GA does not survive the budget correction. The two effect-size columns come from files that subtract in opposite directions, so compare their magnitude, not their sign.
 
-### Sensitivity, single seed per setting
+### Sensitivity, Islands
 
-| Parameter / Value | Islands 1 | Islands 2 | Islands 4 | Islands 6 | Islands 8 | PopSize 80 | PopSize 120 | PopSize 160 | PopSize 200 | PopSize 250 | Generations 100 | Generations 150 | Generations 200 | Generations 250 | Generations 300 | FCM_Clusters 2 | FCM_Clusters 3 | FCM_Clusters 4 | FCM_Clusters 5 | FCM_Clusters 6 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Cost (USD) | 659,126.20 | 658,217.16 | 661,285.42 | 661,531.94 | 665,590.24 | 671,353.63 | 667,768.56 | 663,768.75 | 661,531.94 | 660,661.54 | 663,218.70 | 661,808.49 | 662,903.48 | 663,327.51 | 661,531.94 | 662,674.03 | 661,635.26 | 662,061.94 | 661,531.94 | 662,802.00 |
-| Cost relative to default run (%) | 100.138 | 100.000 | 100.466 | 100.504 | 101.120 | 101.618 | 101.076 | 100.470 | 100.132 | 100.000 | 100.255 | 100.042 | 100.207 | 100.271 | 100.000 | 100.173 | 100.016 | 100.080 | 100.000 | 100.192 |
+| Islands | Cost (USD) | Relative to default run (%) |
+|---|---|---|
+| 1 | 659,126.20 | 100.138 |
+| 2 | 658,217.16 | 100.000 |
+| 4 | 661,285.42 | 100.466 |
+| 6 | 661,531.94 | 100.504 |
+| 8 | 665,590.24 | 101.120 |
 
-Cost is flat in population size down to 200, then rises 1.62% at 80, and flat in cluster count with a shallow minimum at five clusters. Island count matters little between two and six, and the generation cap is flat from 150 upward. The configured default (250 population, 5 clusters) is at or near the minimum of every sweep.
+Two islands give the lowest cost, 658,217.16 USD; eight islands give the highest, 665,590.24 USD, 1.12% above that run. One, four and six islands sit between the two, so the parameter matters at the percent level and not monotonically.
+
+### Sensitivity, PopSize
+
+| PopSize | Cost (USD) | Relative to default run (%) |
+|---|---|---|
+| 80 | 671,353.63 | 101.618 |
+| 120 | 667,768.56 | 101.076 |
+| 160 | 663,768.75 | 100.470 |
+| 200 | 661,531.94 | 100.132 |
+| 250 | 660,661.54 | 100.000 |
+
+Cost falls steadily with population size: 80 individuals cost 671,353.63 USD, 1.62% above the 250-individual run at 660,661.54 USD. Most of the gain is already present at 200, so 250 is cheap insurance rather than a hard requirement.
+
+### Sensitivity, Generations
+
+| Generations | Cost (USD) | Relative to default run (%) |
+|---|---|---|
+| 100 | 663,218.70 | 100.255 |
+| 150 | 661,808.49 | 100.042 |
+| 200 | 662,903.48 | 100.207 |
+| 250 | 663,327.51 | 100.271 |
+| 300 | 661,531.94 | 100.000 |
+
+The curve is flat and slightly noisy: 150 generations is the best of the intermediate settings at 661,808.49 USD, 100 costs 0.26% more, and 250 costs 0.27% more. The method converges well before the cap, so the generation limit is not binding.
+
+### Sensitivity, FCM_Clusters
+
+| FCM_Clusters | Cost (USD) | Relative to default run (%) |
+|---|---|---|
+| 2 | 662,674.03 | 100.173 |
+| 3 | 661,635.26 | 100.016 |
+| 4 | 662,061.94 | 100.080 |
+| 5 | 661,531.94 | 100.000 |
+| 6 | 662,802.00 | 100.192 |
+
+Five clusters is the minimum at 661,531.94 USD; three is only 0.016% worse, while two and six cost 0.17% and 0.19% more. Cluster count matters less than population size on this case.
 
 ### Result workbooks
 
-| File | Content |
-|---|---|
-| [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx) | raw output |
-| [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx) | raw output |
-| [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx) | raw output |
-| [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx) | raw output |
-| [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx) | raw output |
-| [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx) | raw output |
-| [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx) | raw output |
-| [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx) | raw output |
-| [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx) | raw output |
-| [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx) | raw output |
-| [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx) | raw output |
-| [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx) | raw output |
-| [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx) | raw output |
-| [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx) | raw output |
-| [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx) | raw output |
-| [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx) | raw output |
+Raw solver output: [`results/Ablation_Study.xlsx`](results/Ablation_Study.xlsx), [`results/Budget_Matched_Results.xlsx`](results/Budget_Matched_Results.xlsx), [`results/Budget_Matched_Statistical_Tests.xlsx`](results/Budget_Matched_Statistical_Tests.xlsx), [`results/Convergence_Curves.xlsx`](results/Convergence_Curves.xlsx), [`results/FCM_PbGA_Results.xlsx`](results/FCM_PbGA_Results.xlsx), [`results/FCM_PbGA_v4_Results.xlsx`](results/FCM_PbGA_v4_Results.xlsx), [`results/Final_Comprehensive_Comparison.xlsx`](results/Final_Comprehensive_Comparison.xlsx), [`results/Sensitivity_Analysis.xlsx`](results/Sensitivity_Analysis.xlsx), [`results/Statistical_Tests.xlsx`](results/Statistical_Tests.xlsx), [`results/V4_Comparison_Results.xlsx`](results/V4_Comparison_Results.xlsx), [`results/revision/CEC2020_results.xlsx`](results/revision/CEC2020_results.xlsx), [`results/revision/R1a_v4_FCM_ablation.xlsx`](results/revision/R1a_v4_FCM_ablation.xlsx), [`results/revision/R1b_v4_constraint_audit.xlsx`](results/revision/R1b_v4_constraint_audit.xlsx), [`results/revision/R1c_GArematch.xlsx`](results/revision/R1c_GArematch.xlsx), [`results/revision/R1d_v4_LS_ablation.xlsx`](results/revision/R1d_v4_LS_ablation.xlsx), [`results/revision/R1e_strict_final.xlsx`](results/revision/R1e_strict_final.xlsx).
 
 The workbooks hold the raw solver output behind the tables above: per-unit schedules, per-hour costs, constraint checks and run statistics.
 
